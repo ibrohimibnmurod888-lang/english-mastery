@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Mastery - Interactive Learning World</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #2563eb; --primary-light: #3b82f6; --primary-dark: #1d4ed8;
+  --accent: #f59e0b; --accent-light: #fbbf24; --accent-dark: #d97706;
+  --success: #10b981; --error: #ef4444; --warning: #f59e0b;
+  --bg: #f8fafc; --bg-card: #ffffff; --bg-elevated: #f1f5f9;
+  --text: #0f172a; --text-light: #64748b; --text-muted: #94a3b8;
+  --border: #e2e8f0; --border-light: #f1f5f9;
+  --shadow: rgba(15, 23, 42, 0.04); --shadow-md: rgba(15, 23, 42, 0.08); --shadow-lg: rgba(15, 23, 42, 0.12);
+  --gradient-1: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #60a5fa 100%);
+  --gradient-2: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+  --gradient-3: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  --gradient-hero: linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #3b82f6 100%);
+}
+body.dark-mode {
+  --bg: #0f172a; --bg-card: #1e293b; --bg-elevated: #334155;
+  --text: #f8fafc; --text-light: #94a3b8; --text-muted: #64748b;
+  --border: #334155; --border-light: #1e293b;
+  --shadow: rgba(0,0,0,0.2); --shadow-md: rgba(0,0,0,0.3); --shadow-lg: rgba(0,0,0,0.4);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; transition: all 0.3s ease; }
+
+/* Animated Background */
+.bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
+.particle { position: absolute; border-radius: 50%; opacity: 0.06; animation: float 25s infinite ease-in-out; }
+.particle:nth-child(1){width:100px;height:100px;background:var(--primary);top:15%;left:10%;animation-delay:0s}
+.particle:nth-child(2){width:150px;height:150px;background:var(--accent);top:55%;left:75%;animation-delay:-8s}
+.particle:nth-child(3){width:80px;height:80px;background:var(--success);top:35%;left:45%;animation-delay:-15s}
+.particle:nth-child(4){width:120px;height:120px;background:var(--primary-light);top:80%;left:25%;animation-delay:-20s}
+@keyframes float { 0%,100%{transform:translate(0,0)rotate(0deg)} 33%{transform:translate(40px,-40px)rotate(120deg)} 66%{transform:translate(-30px,30px)rotate(240deg)} }
+
+/* Header */
+.header { background: var(--gradient-hero); padding: 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 30px var(--shadow-lg); }
+.header-top { display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.logo { display: flex; align-items: center; gap: 14px; cursor: pointer; }
+.logo-icon { width: 48px; height: 48px; background: var(--accent); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 900; color: var(--primary-dark); animation: pulse 2.5s infinite; box-shadow: 0 4px 15px rgba(245,158,11,0.4); }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+.logo-text { color: white; font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
+.logo-sub { color: rgba(255,255,255,0.6); font-size: 13px; font-weight: 400; }
+.header-controls { display: flex; gap: 16px; align-items: center; }
+.btn-icon { width: 42px; height: 42px; border-radius: 12px; border: none; background: rgba(255,255,255,0.1); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: all 0.3s ease; backdrop-filter: blur(10px); }
+.btn-icon:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+.user-avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--gradient-2); display: flex; align-items: center; justify-content: center; font-weight: 800; color: #78350f; cursor: pointer; position: relative; font-size: 18px; }
+.user-avatar::after { content: ''; position: absolute; width: 14px; height: 14px; background: var(--success); border-radius: 50%; bottom: -2px; right: -2px; border: 3px solid var(--primary-dark); }
+
+/* Navigation */
+.nav-bar { display: flex; gap: 4px; padding: 0 24px; overflow-x: auto; scrollbar-width: none; }
+.nav-bar::-webkit-scrollbar { display: none; }
+.nav-item { padding: 16px 22px; color: rgba(255,255,255,0.6); cursor: pointer; border: none; background: none; font-family: inherit; font-size: 14px; font-weight: 600; position: relative; transition: all 0.3s ease; white-space: nowrap; display: flex; align-items: center; gap: 8px; letter-spacing: 0.3px; }
+.nav-item:hover { color: white; background: rgba(255,255,255,0.05); border-radius: 12px 12px 0 0; }
+.nav-item.active { color: white; font-weight: 700; background: rgba(255,255,255,0.08); border-radius: 12px 12px 0 0; }
+.nav-item.active::after { content: ''; position: absolute; bottom: 0; left: 25%; right: 25%; height: 3px; background: var(--accent); border-radius: 3px 3px 0 0; box-shadow: 0 0 10px rgba(245,158,11,0.5); }
+.nav-badge { background: var(--accent); color: #78350f; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 20px; margin-left: 4px; }
+
+/* Main Content */
+.main-content { max-width: 1400px; margin: 0 auto; padding: 32px; }
+.section { display: none; animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.section.active { display: block; }
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(30px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+/* Hero */
+.hero { background: var(--gradient-hero); border-radius: 28px; padding: 60px 50px; color: white; position: relative; overflow: hidden; margin-bottom: 40px; }
+.hero::before { content: ''; position: absolute; top: -60%; right: -15%; width: 500px; height: 500px; background: var(--accent); border-radius: 50%; opacity: 0.1; filter: blur(60px); }
+.hero::after { content: ''; position: absolute; bottom: -40%; left: -10%; width: 400px; height: 400px; background: var(--primary-light); border-radius: 50%; opacity: 0.08; filter: blur(80px); }
+.hero-content { position: relative; z-index: 1; }
+.hero h1 { font-size: 48px; font-weight: 900; margin-bottom: 18px; line-height: 1.1; letter-spacing: -1px; font-family: 'Playfair Display', serif; }
+.hero p { font-size: 19px; opacity: 0.85; max-width: 550px; margin-bottom: 30px; line-height: 1.6; font-weight: 400; }
+.hero-stats { display: flex; gap: 40px; margin-top: 35px; }
+.hero-stat { text-align: center; }
+.hero-stat-number { font-size: 36px; font-weight: 900; color: var(--accent-light); text-shadow: 0 0 20px rgba(251,191,36,0.3); }
+.hero-stat-label { font-size: 13px; opacity: 0.7; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+
+/* Cards Grid */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; margin-bottom: 40px; }
+.card { background: var(--bg-card); border-radius: 24px; padding: 30px; border: 1px solid var(--border); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; position: relative; overflow: hidden; }
+.card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: var(--gradient-1); transform: scaleX(0); transition: transform 0.4s ease; }
+.card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 25px 50px var(--shadow-md); border-color: transparent; }
+.card:hover::before { transform: scaleX(1); }
+.card-icon { width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; margin-bottom: 20px; transition: all 0.4s ease; }
+.card:hover .card-icon { transform: scale(1.15) rotate(-5deg); }
+.card-icon.blue { background: rgba(37,99,235,0.08); } .card-icon.gold { background: rgba(245,158,11,0.08); } .card-icon.green { background: rgba(16,185,129,0.08); } .card-icon.purple { background: rgba(139,92,246,0.08); } .card-icon.red { background: rgba(239,68,68,0.08); } .card-icon.teal { background: rgba(20,184,166,0.08); }
+.card h3 { font-size: 22px; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.3px; }
+.card p { font-size: 15px; color: var(--text-light); line-height: 1.7; }
+.card-progress { margin-top: 20px; }
+.card-progress-bar { height: 8px; background: var(--border-light); border-radius: 4px; overflow: hidden; }
+.card-progress-fill { height: 100%; border-radius: 4px; transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.card-progress-text { font-size: 13px; color: var(--text-muted); margin-top: 8px; font-weight: 500; }
+
+/* Section Title */
+.section-title { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; }
+.section-title h2 { font-size: 28px; font-weight: 900; display: flex; align-items: center; gap: 12px; letter-spacing: -0.5px; }
+.badge { background: var(--gradient-2); color: #78350f; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 800; }
+
+/* Vocabulary Cards */
+.vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+.vocab-card { background: var(--bg-card); border-radius: 20px; padding: 28px 20px; text-align: center; cursor: pointer; border: 2px solid var(--border); transition: all 0.35s ease; position: relative; }
+.vocab-card:hover { border-color: var(--primary); transform: translateY(-6px); box-shadow: 0 15px 35px var(--shadow-md); }
+.vocab-card .word { font-size: 28px; font-weight: 800; color: var(--primary); margin-bottom: 8px; font-family: 'Playfair Display', serif; }
+.vocab-card .type { font-size: 12px; color: var(--accent-dark); background: rgba(245,158,11,0.1); padding: 3px 10px; border-radius: 12px; display: inline-block; margin-bottom: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.vocab-card .meaning { font-size: 15px; color: var(--text-light); margin-bottom: 8px; }
+.vocab-card .example { font-size: 13px; color: var(--text-muted); font-style: italic; line-height: 1.5; }
+.vocab-card .audio-btn-small { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--primary); background: transparent; color: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; margin: 12px auto 0; transition: all 0.3s ease; }
+.vocab-card .audio-btn-small:hover { background: var(--primary); color: white; transform: scale(1.1); }
+.vocab-card.learned { border-color: var(--success); background: rgba(16,185,129,0.03); }
+.vocab-card.learned::after { content: '✓'; position: absolute; top: 10px; right: 10px; width: 24px; height: 24px; background: var(--success); color: white; border-radius: 50%; font-size: 14px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+
+/* Game Container */
+.game-container { background: var(--bg-card); border-radius: 28px; padding: 45px; border: 1px solid var(--border); position: relative; overflow: hidden; }
+.game-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; }
+.game-score { display: flex; gap: 30px; }
+.score-item { text-align: center; }
+.score-item .number { font-size: 32px; font-weight: 900; color: var(--primary); }
+.score-item .label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+.game-timer { width: 64px; height: 64px; border-radius: 50%; background: var(--gradient-1); display: flex; align-items: center; justify-content: center; color: white; font-size: 22px; font-weight: 800; position: relative; box-shadow: 0 4px 15px rgba(37,99,235,0.3); }
+.game-timer.warning { background: var(--warning); animation: timerPulse 0.6s infinite; box-shadow: 0 4px 15px rgba(245,158,11,0.4); }
+@keyframes timerPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+
+/* Flashcard */
+.flashcard { width: 100%; max-width: 450px; height: 300px; margin: 0 auto 35px; perspective: 1200px; cursor: pointer; }
+.flashcard-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+.flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+.flashcard-front, .flashcard-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid var(--border); background: var(--bg-card); box-shadow: 0 10px 40px var(--shadow); }
+.flashcard-back { transform: rotateY(180deg); background: var(--gradient-1); color: white; border-color: transparent; }
+.flashcard-word { font-size: 52px; font-weight: 900; font-family: 'Playfair Display', serif; margin-bottom: 15px; letter-spacing: -1px; }
+.flashcard-type { font-size: 14px; color: var(--accent); background: rgba(245,158,11,0.1); padding: 5px 14px; border-radius: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
+.flashcard-meaning { font-size: 26px; font-weight: 700; }
+.flashcard-example { font-size: 16px; opacity: 0.9; margin-top: 15px; font-style: italic; max-width: 80%; text-align: center; line-height: 1.5; }
+.flashcard-hint { font-size: 14px; color: var(--text-muted); margin-top: 15px; }
+
+/* Game Options */
+.game-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 550px; margin: 0 auto; }
+.game-option { padding: 22px; border-radius: 18px; border: 2px solid var(--border); background: var(--bg-card); cursor: pointer; font-size: 17px; font-weight: 700; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); text-align: center; color: var(--text); }
+.game-option:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: 0 12px 25px var(--shadow-md); background: rgba(37,99,235,0.02); }
+.game-option.correct { border-color: var(--success); background: rgba(16,185,129,0.08); animation: correctAnim 0.5s ease; }
+.game-option.wrong { border-color: var(--error); background: rgba(239,68,68,0.08); animation: shake 0.5s ease; }
+@keyframes correctAnim { 0%{transform:scale(1)} 50%{transform:scale(1.05)} 100%{transform:scale(1)} }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-12px)} 75%{transform:translateX(12px)} }
+
+/* Grammar */
+.grammar-topic { background: var(--bg-card); border-radius: 24px; padding: 35px; margin-bottom: 24px; border: 1px solid var(--border); transition: all 0.3s ease; }
+.grammar-topic:hover { box-shadow: 0 10px 30px var(--shadow); }
+.grammar-topic h3 { font-size: 24px; font-weight: 800; margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
+.grammar-topic .content { color: var(--text-light); line-height: 1.8; margin-bottom: 20px; font-size: 16px; }
+.grammar-example { background: var(--bg-elevated); border-radius: 16px; padding: 24px; margin: 18px 0; border-left: 4px solid var(--primary); }
+.grammar-example .sentence { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 10px; font-family: 'Playfair Display', serif; }
+.grammar-example .explanation { font-size: 15px; color: var(--text-light); line-height: 1.7; }
+.grammar-example .rule { font-size: 13px; color: var(--primary); font-weight: 700; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* Quiz */
+.quiz-container { background: var(--bg-card); border-radius: 28px; padding: 45px; border: 1px solid var(--border); }
+.quiz-question { font-size: 24px; font-weight: 800; margin-bottom: 35px; text-align: center; line-height: 1.5; }
+.quiz-question .highlight { color: var(--primary); font-family: 'Playfair Display', serif; font-size: 32px; display: block; margin: 18px 0; }
+.quiz-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 650px; margin: 0 auto; }
+.quiz-option { padding: 24px; border-radius: 18px; border: 2px solid var(--border); background: var(--bg-card); cursor: pointer; font-size: 18px; font-weight: 600; transition: all 0.3s ease; text-align: center; }
+.quiz-option:hover { border-color: var(--primary); background: rgba(37,99,235,0.03); transform: translateY(-3px); }
+.quiz-option.selected { border-color: var(--primary); background: rgba(37,99,235,0.06); }
+.quiz-option.correct-answer { border-color: var(--success); background: rgba(16,185,129,0.1); }
+.quiz-option.wrong-answer { border-color: var(--error); background: rgba(239,68,68,0.1); }
+.quiz-feedback { text-align: center; margin-top: 25px; padding: 24px; border-radius: 18px; font-size: 18px; font-weight: 700; display: none; }
+.quiz-feedback.show { display: block; animation: fadeInUp 0.3s ease; }
+.quiz-feedback.correct { background: rgba(16,185,129,0.08); color: var(--success); }
+.quiz-feedback.wrong { background: rgba(239,68,68,0.08); color: var(--error); }
+
+/* Reading */
+.reading-passage { background: var(--bg-card); border-radius: 24px; padding: 40px; border: 1px solid var(--border); margin-bottom: 30px; }
+.reading-passage .title { font-size: 28px; font-weight: 800; margin-bottom: 24px; color: var(--primary); font-family: 'Playfair Display', serif; }
+.reading-passage .text { font-size: 18px; line-height: 2; color: var(--text); margin-bottom: 24px; font-family: 'Playfair Display', serif; }
+.reading-passage .difficulty-tag { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+.reading-passage .difficulty-tag.beginner { background: rgba(16,185,129,0.1); color: var(--success); }
+.reading-passage .difficulty-tag.intermediate { background: rgba(245,158,11,0.1); color: var(--accent-dark); }
+.reading-passage .difficulty-tag.advanced { background: rgba(239,68,68,0.1); color: var(--error); }
+.reading-questions { background: var(--bg-card); border-radius: 24px; padding: 35px; border: 1px solid var(--border); }
+.reading-question { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border-light); }
+.reading-question:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.reading-question p { font-size: 18px; font-weight: 700; margin-bottom: 14px; color: var(--text); }
+.reading-answers { display: flex; flex-direction: column; gap: 10px; }
+.reading-answer { padding: 14px 18px; border-radius: 12px; border: 2px solid var(--border); cursor: pointer; transition: all 0.3s ease; font-size: 15px; font-weight: 500; }
+.reading-answer:hover { border-color: var(--primary); background: rgba(37,99,235,0.03); }
+
+/* Writing */
+.writing-prompt { background: var(--bg-card); border-radius: 24px; padding: 35px; border: 1px solid var(--border); margin-bottom: 24px; }
+.writing-prompt h3 { font-size: 22px; font-weight: 800; margin-bottom: 15px; }
+.writing-prompt .prompt-text { font-size: 17px; color: var(--text-light); line-height: 1.8; }
+.writing-prompt .word-count { font-size: 13px; color: var(--text-muted); margin-top: 15px; font-weight: 600; }
+.writing-area { background: var(--bg-card); border-radius: 24px; padding: 30px; border: 1px solid var(--border); }
+.writing-textarea { width: 100%; min-height: 250px; padding: 24px; border-radius: 16px; border: 2px solid var(--border); font-family: 'Inter', sans-serif; font-size: 17px; line-height: 1.8; resize: vertical; background: var(--bg); color: var(--text); transition: all 0.3s ease; }
+.writing-textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37,99,235,0.1); }
+.writing-tools { display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+.writing-tool { padding: 10px 20px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.3s ease; color: var(--text); }
+.writing-tool:hover { border-color: var(--primary); color: var(--primary); background: rgba(37,99,235,0.03); }
+
+/* Progress */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; margin-bottom: 40px; }
+.stat-card { background: var(--bg-card); border-radius: 24px; padding: 30px; border: 1px solid var(--border); text-align: center; transition: all 0.4s ease; }
+.stat-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px var(--shadow-md); }
+.stat-card .icon { font-size: 40px; margin-bottom: 12px; }
+.stat-card .value { font-size: 36px; font-weight: 900; color: var(--primary); }
+.stat-card .label { font-size: 14px; color: var(--text-muted); margin-top: 6px; font-weight: 600; }
+.progress-chart { background: var(--bg-card); border-radius: 24px; padding: 35px; border: 1px solid var(--border); margin-bottom: 30px; }
+.progress-chart h3 { font-size: 22px; font-weight: 800; margin-bottom: 25px; }
+.chart-bar { display: flex; align-items: center; margin-bottom: 18px; }
+.chart-label { width: 130px; font-size: 14px; font-weight: 700; color: var(--text); }
+.chart-track { flex: 1; height: 14px; background: var(--border-light); border-radius: 7px; overflow: hidden; margin: 0 18px; }
+.chart-fill { height: 100%; border-radius: 7px; transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+.chart-value { width: 55px; font-size: 15px; font-weight: 800; color: var(--primary); }
+
+/* Leaderboard */
+.leaderboard { background: var(--bg-card); border-radius: 24px; padding: 30px; border: 1px solid var(--border); }
+.leaderboard-item { display: flex; align-items: center; gap: 18px; padding: 18px; border-radius: 16px; transition: all 0.3s ease; margin-bottom: 10px; }
+.leaderboard-item:hover { background: var(--bg-elevated); }
+.leaderboard-rank { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 16px; }
+.leaderboard-rank.gold { background: linear-gradient(135deg, #ffd700, #ffb700); color: white; box-shadow: 0 4px 10px rgba(255,183,0,0.3); }
+.leaderboard-rank.silver { background: linear-gradient(135deg, #e8e8e8, #c0c0c0); color: #555; }
+.leaderboard-rank.bronze { background: linear-gradient(135deg, #cd7f32, #b87333); color: white; }
+.leaderboard-rank.normal { background: var(--border-light); color: var(--text-muted); }
+.leaderboard-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--gradient-1); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 18px; }
+.leaderboard-info { flex: 1; }
+.leaderboard-name { font-weight: 800; font-size: 16px; }
+.leaderboard-level { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+.leaderboard-xp { font-weight: 800; color: var(--accent-dark); font-size: 18px; }
+
+/* Achievements */
+.achievements-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 18px; }
+.achievement { background: var(--bg-card); border-radius: 20px; padding: 24px; text-align: center; border: 2px solid var(--border); transition: all 0.4s ease; opacity: 0.4; filter: grayscale(0.6); }
+.achievement.unlocked { opacity: 1; filter: grayscale(0); border-color: var(--accent); background: rgba(245,158,11,0.04); box-shadow: 0 8px 25px rgba(245,158,11,0.1); }
+.achievement.unlocked:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 15px 35px rgba(245,158,11,0.15); }
+.achievement .badge-icon { font-size: 44px; margin-bottom: 12px; }
+.achievement .badge-name { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+.achievement .badge-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+/* Modal */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; animation: fadeIn 0.3s ease; }
+.modal-overlay.show { display: flex; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal { background: var(--bg-card); border-radius: 28px; padding: 45px; max-width: 520px; width: 90%; max-height: 85vh; overflow-y: auto; animation: modalSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1); border: 1px solid var(--border); position: relative; box-shadow: 0 25px 50px var(--shadow-lg); }
+@keyframes modalSlide { from { transform: translateY(-40px) scale(0.95); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+.modal h2 { font-size: 28px; font-weight: 900; margin-bottom: 24px; text-align: center; letter-spacing: -0.5px; }
+.modal-close { position: absolute; top: 18px; right: 18px; width: 40px; height: 40px; border-radius: 50%; border: none; background: var(--border-light); cursor: pointer; font-size: 20px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; color: var(--text); }
+.modal-close:hover { background: var(--error); color: white; transform: rotate(90deg); }
+
+/* Toast */
+.toast-container { position: fixed; top: 100px; right: 30px; z-index: 2500; display: flex; flex-direction: column; gap: 12px; }
+.toast { background: var(--bg-card); border-radius: 16px; padding: 18px 26px; box-shadow: 0 15px 35px var(--shadow-lg); border: 2px solid var(--border); display: flex; align-items: center; gap: 14px; animation: toastSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1); min-width: 320px; }
+.toast.success { border-color: var(--success); } .toast.error { border-color: var(--error); } .toast.warning { border-color: var(--warning); }
+@keyframes toastSlide { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.toast-icon { font-size: 26px; } .toast-message { font-weight: 700; font-size: 15px; }
+
+/* Confetti */
+.confetti-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3000; overflow: hidden; }
+.confetti { position: absolute; width: 12px; height: 12px; animation: confettiFall 4s ease-out forwards; }
+@keyframes confettiFall { 0% { transform: translateY(-100px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+
+/* XP Bar */
+.xp-bar-container { width: 100%; max-width: 200px; }
+.xp-bar { height: 10px; background: rgba(255,255,255,0.15); border-radius: 5px; overflow: hidden; }
+.xp-fill { height: 100%; background: var(--gradient-2); border-radius: 5px; transition: width 0.6s ease; }
+.xp-text { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 6px; text-align: center; font-weight: 600; }
+
+/* Level Badge */
+.level-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--gradient-2); color: #78350f; padding: 8px 18px; border-radius: 24px; font-weight: 800; font-size: 14px; box-shadow: 0 4px 12px rgba(245,158,11,0.3); }
+
+/* Streak */
+.streak-counter { display: flex; align-items: center; gap: 8px; background: rgba(239,68,68,0.1); color: var(--error); padding: 8px 18px; border-radius: 24px; font-weight: 800; font-size: 14px; }
+.streak-counter.active { animation: streakGlow 1.2s infinite alternate; }
+@keyframes streakGlow { from { box-shadow: 0 0 5px rgba(239,68,68,0.2); } to { box-shadow: 0 0 25px rgba(239,68,68,0.5); } }
+
+/* Difficulty Selector */
+.difficulty-selector { display: flex; gap: 12px; justify-content: center; margin-bottom: 30px; }
+.difficulty-btn { padding: 12px 28px; border-radius: 14px; border: 2px solid var(--border); background: var(--bg-card); cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 700; transition: all 0.3s ease; color: var(--text); }
+.difficulty-btn:hover { border-color: var(--primary); transform: translateY(-2px); }
+.difficulty-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 15px rgba(37,99,235,0.3); }
+
+/* Audio Button */
+.audio-btn { width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--primary); background: transparent; color: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: all 0.3s ease; }
+.audio-btn:hover { background: var(--primary); color: white; transform: scale(1.15); }
+.audio-btn.playing { animation: audioPulse 1s infinite; }
+@keyframes audioPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+
+/* Listening Exercise */
+.listening-box { background: var(--bg-elevated); border-radius: 20px; padding: 35px; text-align: center; margin-bottom: 25px; }
+.listening-box .play-btn { width: 80px; height: 80px; border-radius: 50%; background: var(--gradient-1); color: white; border: none; font-size: 32px; cursor: pointer; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(37,99,235,0.3); }
+.listening-box .play-btn:hover { transform: scale(1.1); box-shadow: 0 12px 35px rgba(37,99,235,0.4); }
+.listening-box .play-btn.playing { animation: audioPulse 1.2s infinite; }
+.listening-box .transcript { font-size: 20px; color: var(--text); line-height: 1.8; font-family: 'Playfair Display', serif; min-height: 80px; }
+.listening-box .transcript.hidden { color: var(--text-muted); font-style: italic; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .main-content { padding: 20px; } .hero { padding: 40px 24px; } .hero h1 { font-size: 32px; }
+  .cards-grid { grid-template-columns: 1fr; } .vocab-grid { grid-template-columns: repeat(2, 1fr); }
+  .game-options, .quiz-options { grid-template-columns: 1fr; } .hero-stats { flex-wrap: wrap; gap: 20px; }
+  .nav-bar { padding: 0 12px; } .nav-item { padding: 12px 16px; font-size: 13px; }
+  .toast-container { right: 15px; left: 15px; } .toast { min-width: auto; }
+}
+
+::-webkit-scrollbar { width: 8px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 4px; } ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+</style>
+</head>
+<body>
+<div class="bg-animation">
+  <div class="particle"></div><div class="particle"></div><div class="particle"></div><div class="particle"></div>
+</div>
+<div class="toast-container" id="toastContainer"></div>
+<div class="confetti-container" id="confettiContainer"></div>
+
+<header class="header">
+  <div class="header-top">
+    <div class="logo" onclick="showSection('home')">
+      <div class="logo-icon">E</div>
+      <div><div class="logo-text">English Mastery</div><div class="logo-sub">Interactive Learning World</div></div>
+    </div>
+    <div class="header-controls">
+      <div class="level-badge"><span>⭐</span><span id="userLevel">Level 1</span></div>
+      <div class="xp-bar-container" style="width:180px">
+        <div class="xp-bar"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+        <div class="xp-text" id="xpText">0 / 100 XP</div>
+      </div>
+      <div class="streak-counter" id="streakCounter"><span>🔥</span><span id="streakDays">0</span></div>
+      <button class="btn-icon" onclick="toggleDarkMode()" title="Toggle Dark Mode">🌙</button>
+      <button class="btn-icon" onclick="showHelp()" title="Help">❓</button>
+      <div class="user-avatar" onclick="showProfile()" title="Profile"><span id="userInitial">J</span></div>
+    </div>
+  </div>
+  <nav class="nav-bar">
+    <button class="nav-item active" onclick="showSection('home')" data-section="home"><span>🏠</span> Home</button>
+    <button class="nav-item" onclick="showSection('vocabulary')" data-section="vocabulary"><span>📚</span> Vocabulary <span class="nav-badge">NEW</span></button>
+    <button class="nav-item" onclick="showSection('grammar')" data-section="grammar"><span>📝</span> Grammar</button>
+    <button class="nav-item" onclick="showSection('listening')" data-section="listening"><span>🎧</span> Listening</button>
+    <button class="nav-item" onclick="showSection('reading')" data-section="reading"><span>📖</span> Reading</button>
+    <button class="nav-item" onclick="showSection('writing')" data-section="writing"><span>✍️</span> Writing</button>
+    <button class="nav-item" onclick="showSection('quiz')" data-section="quiz"><span>🎯</span> Quiz</button>
+    <button class="nav-item" onclick="showSection('progress')" data-section="progress"><span>📊</span> Progress</button>
+  </nav>
+</header>
+
+<main class="main-content">
+  <!-- HOME -->
+  <section class="section active" id="home">
+    <div class="hero">
+      <div class="hero-content">
+        <h1>Master English with Confidence! 🚀</h1>
+        <p>Embark on an exciting journey to master English through interactive lessons, games, and real-world challenges. Your path to fluency starts here!</p>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="hero-stat-number" id="totalLessons">50+</div><div class="hero-stat-label">Lessons</div></div>
+          <div class="hero-stat"><div class="hero-stat-number" id="totalXP">0</div><div class="hero-stat-label">XP Earned</div></div>
+          <div class="hero-stat"><div class="hero-stat-number" id="completedLessons">0</div><div class="hero-stat-label">Completed</div></div>
+          <div class="hero-stat"><div class="hero-stat-number" id="currentStreak">0</div><div class="hero-stat-label">Day Streak</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="section-title"><h2><span>🎯</span> Start Your Journey</h2><span class="badge">Choose Your Path</span></div>
+    <div class="cards-grid">
+      <div class="card" onclick="showSection('vocabulary')"><div class="card-icon blue">📚</div><h3>Vocabulary Builder</h3><p>Learn 500+ words across 10 categories with flashcards, games, and spaced repetition</p><div class="card-progress"><div class="card-progress-bar"><div class="card-progress-fill" id="vocabProgress" style="width:0%;background:var(--primary)"></div></div><div class="card-progress-text" id="vocabProgressText">0 / 500 words learned</div></div></div>
+      <div class="card" onclick="showSection('grammar')"><div class="card-icon gold">📝</div><h3>Grammar Mastery</h3><p>Master tenses, conditionals, modals, and more with interactive examples and exercises</p><div class="card-progress"><div class="card-progress-bar"><div class="card-progress-fill" id="grammarProgress" style="width:0%;background:var(--accent)"></div></div><div class="card-progress-text" id="grammarProgressText">0 / 20 topics mastered</div></div></div>
+      <div class="card" onclick="showSection('listening')"><div class="card-icon green">🎧</div><h3>Listening Practice</h3><p>Train your ear with dialogues, podcasts, and dictation exercises at 3 difficulty levels</p><div class="card-progress"><div class="card-progress-bar"><div class="card-progress-fill" id="listeningProgress" style="width:0%;background:var(--success)"></div></div><div class="card-progress-text" id="listeningProgressText">0 / 15 exercises completed</div></div></div>
+      <div class="card" onclick="showSection('reading')"><div class="card-icon purple">📖</div><h3>Reading Comprehension</h3><p>Read stories, articles, and passages with comprehension questions and vocabulary help</p><div class="card-progress"><div class="card-progress-bar"><div class="card-progress-fill" id="readingProgress" style="width:0%;background:#8b5cf6"></div></div><div class="card-progress-text" id="readingProgressText">0 / 12 passages read</div></div></div>
+      <div class="card" onclick="showSection('writing')"><div class="card-icon red">✍️</div><h3>Writing Skills</h3><p>Practice essays, emails, and creative writing with prompts, hints, and model answers</p><div class="card-progress"><div class="card-progress-bar"><div class="card-progress-fill" id="writingProgress" style="width:0%;background:var(--error)"></div></div><div class="card-progress-text" id="writingProgressText">0 / 10 exercises completed</div></div></div>
+      <div class="card" onclick="showSection('quiz')"><div class="card-icon teal">🎯</div><h3>Challenge Quiz</h3><p>Test your knowledge with adaptive quizzes and compete on the global leaderboard</p><div class="card-progress"><div class="card-progress-bar"><div class="card-progress-fill" id="quizProgress" style="width:0%;background:#14b8a6"></div></div><div class="card-progress-text" id="quizProgressText">0 / 25 quizzes passed</div></div></div>
+    </div>
+    <div class="section-title"><h2><span>🏆</span> Your Achievements</h2></div>
+    <div class="achievements-grid" id="achievementsGrid"></div>
+  </section>
+
+  <!-- VOCABULARY -->
+  <section class="section" id="vocabulary">
+    <div class="section-title"><h2><span>📚</span> Vocabulary Builder</h2><div class="difficulty-selector"><button class="difficulty-btn active" onclick="setVocabDifficulty('beginner')">Beginner</button><button class="difficulty-btn" onclick="setVocabDifficulty('intermediate')">Intermediate</button><button class="difficulty-btn" onclick="setVocabDifficulty('advanced')">Advanced</button></div></div>
+    <div class="game-container">
+      <div class="game-header">
+        <div class="game-score"><div class="score-item"><div class="number" id="vocabScore">0</div><div class="label">Score</div></div><div class="score-item"><div class="number" id="vocabStreak">0</div><div class="label">Streak</div></div></div>
+        <div class="game-timer" id="vocabTimer">30</div>
+      </div>
+      <div class="flashcard" id="flashcard" onclick="flipCard()">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            <div class="flashcard-word" id="flashcardWord">Serendipity</div>
+            <div class="flashcard-type" id="flashcardType">noun</div>
+            <div class="flashcard-hint">Click to reveal meaning</div>
+          </div>
+          <div class="flashcard-back">
+            <div class="flashcard-meaning" id="flashcardMeaning">A fortunate accident</div>
+            <div class="flashcard-example" id="flashcardExample">"Finding my favorite book at a garage sale was pure serendipity."</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-bottom:25px"><button class="audio-btn" onclick="speakVocabWord()" title="Listen">🔊</button></div>
+      <div class="game-options" id="vocabOptions"></div>
+      <div style="text-align:center;margin-top:30px"><button class="btn btn-outline" onclick="nextVocabQuestion()">⏭️ Skip</button></div>
+    </div>
+    <div class="section-title" style="margin-top:40px"><h2><span>📖</span> Word Bank</h2></div>
+    <div class="vocab-grid" id="vocabGrid"></div>
+  </section>
+
+  <!-- GRAMMAR -->
+  <section class="section" id="grammar">
+    <div class="section-title"><h2><span>📝</span> Grammar Mastery</h2></div>
+    <div id="grammarContent"></div>
+  </section>
+
+  <!-- LISTENING -->
+  <section class="section" id="listening">
+    <div class="section-title"><h2><span>🎧</span> Listening Practice</h2><div class="difficulty-selector"><button class="difficulty-btn active" onclick="setListeningLevel('beginner')">Beginner</button><button class="difficulty-btn" onclick="setListeningLevel('intermediate')">Intermediate</button><button class="difficulty-btn" onclick="setListeningLevel('advanced')">Advanced</button></div></div>
+    <div class="listening-box">
+      <button class="play-btn" id="listenPlayBtn" onclick="playListening()">▶️</button>
+      <div class="transcript hidden" id="listenTranscript">Click play to listen...</div>
+      <div style="margin-top:20px"><button class="btn btn-primary" onclick="showTranscript()">👁️ Show Transcript</button></div>
+    </div>
+    <div class="reading-questions" id="listeningQuestions"></div>
+  </section>
+
+  <!-- READING -->
+  <section class="section" id="reading">
+    <div class="section-title"><h2><span>📖</span> Reading Comprehension</h2><div class="difficulty-selector"><button class="difficulty-btn active" onclick="setReadingLevel('beginner')">Beginner</button><button class="difficulty-btn" onclick="setReadingLevel('intermediate')">Intermediate</button><button class="difficulty-btn" onclick="setReadingLevel('advanced')">Advanced</button></div></div>
+    <div class="reading-passage" id="readingPassage"></div>
+    <div class="reading-questions" id="readingQuestions"></div>
+  </section>
+
+  <!-- WRITING -->
+  <section class="section" id="writing">
+    <div class="section-title"><h2><span>✍️</span> Writing Practice</h2></div>
+    <div class="writing-prompt" id="writingPrompt"></div>
+    <div class="writing-area">
+      <textarea class="writing-textarea" id="writingTextarea" placeholder="Write your response here..."></textarea>
+      <div class="writing-tools">
+        <button class="writing-tool" onclick="checkWriting()">✅ Check</button>
+        <button class="writing-tool" onclick="getWritingHint()">💡 Hint</button>
+        <button class="writing-tool" onclick="clearWriting()">🗑️ Clear</button>
+        <button class="writing-tool" onclick="saveWriting()">💾 Save</button>
+        <button class="writing-tool" onclick="showWritingModel()">👁️ Model</button>
+      </div>
+      <div id="writingFeedback" style="margin-top:15px;display:none"></div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="section" id="quiz">
+    <div class="section-title"><h2><span>🎯</span> Challenge Quiz</h2><div class="difficulty-selector"><button class="difficulty-btn active" onclick="setQuizDifficulty('easy')">Easy</button><button class="difficulty-btn" onclick="setQuizDifficulty('medium')">Medium</button><button class="difficulty-btn" onclick="setQuizDifficulty('hard')">Hard</button></div></div>
+    <div class="quiz-container">
+      <div class="game-header">
+        <div class="game-score"><div class="score-item"><div class="number" id="quizScore">0</div><div class="label">Score</div></div><div class="score-item"><div class="number" id="quizQuestionNum">1</div><div class="label">Question</div></div></div>
+        <div class="game-timer" id="quizTimer">60</div>
+      </div>
+      <div class="quiz-question" id="quizQuestion"></div>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <div style="text-align:center;margin-top:25px"><button class="btn btn-primary" onclick="nextQuizQuestion()" id="nextQuizBtn" style="display:none">➡️ Next Question</button></div>
+    </div>
+  </section>
+
+  <!-- PROGRESS -->
+  <section class="section" id="progress">
+    <div class="section-title"><h2><span>📊</span> Your Progress</h2></div>
+    <div class="stats-grid" id="statsGrid"></div>
+    <div class="progress-chart"><h3>Progress by Category</h3><div id="progressBars"></div></div>
+    <div class="section-title"><h2><span>🏆</span> Leaderboard</h2></div>
+    <div class="leaderboard" id="leaderboard"></div>
+  </section>
+</main>
+
+<div class="modal-overlay" id="modalOverlay"><div class="modal" id="modal"><button class="modal-close" onclick="closeModal()">✕</button><div id="modalContent"></div></div></div>
+
+<script>
+
+// ==================== DATA ====================
+const vocabData = {
+  beginner: [
+    {word:'Serendipity',meaning:'A fortunate accident',type:'noun',example:'Finding my favorite book at a garage sale was pure serendipity.'},
+    {word:'Ephemeral',meaning:'Lasting for a very short time',type:'adjective',example:'The beauty of the sunset was ephemeral, lasting only minutes.'},
+    {word:'Resilient',meaning:'Able to recover quickly from difficulties',type:'adjective',example:'She was resilient and bounced back from every setback.'},
+    {word:'Eloquent',meaning:'Fluent and persuasive in speaking',type:'adjective',example:'The lawyer gave an eloquent speech that convinced the jury.'},
+    {word:'Meticulous',meaning:'Showing great attention to detail',type:'adjective',example:'He was meticulous about keeping his workspace organized.'},
+    {word:'Ambiguous',meaning:'Open to more than one interpretation',type:'adjective',example:'The ending of the movie was ambiguous and left everyone guessing.'},
+    {word:'Pragmatic',meaning:'Dealing with things sensibly',type:'adjective',example:'We need a pragmatic solution, not an idealistic one.'},
+    {word:'Nostalgic',meaning:'Feeling sentimental longing for the past',type:'adjective',example:'Looking at old photos made her feel nostalgic.'},
+    {word:'Candid',meaning:'Truthful and straightforward',type:'adjective',example:'I appreciate your candid feedback on my presentation.'},
+    {word:'Diligent',meaning:'Showing care and effort in work',type:'adjective',example:'The diligent student studied for hours every day.'},
+    {word:'Vivid',meaning:'Producing strong, clear images in the mind',type:'adjective',example:'She has vivid memories of her childhood home.'},
+    {word:'Humble',meaning:'Having a modest view of oneself',type:'adjective',example:'Despite his fame, he remained humble and kind.'},
+    {word:'Curious',meaning:'Eager to know or learn',type:'adjective',example:'The curious child asked questions about everything.'},
+    {word:'Grateful',meaning:'Feeling thankful',type:'adjective',example:'I am grateful for all the support you have given me.'},
+    {word:'Patient',meaning:'Able to accept delays without anger',type:'adjective',example:'The teacher was patient with the struggling students.'}
+  ],
+  intermediate: [
+    {word:'Ubiquitous',meaning:'Present everywhere',type:'adjective',example:'Smartphones have become ubiquitous in modern society.'},
+    {word:'Paradigm',meaning:'A typical example or pattern',type:'noun',example:'The company is shifting to a new business paradigm.'},
+    {word:'Empathy',meaning:'Understanding others feelings',type:'noun',example:'She showed great empathy when her friend lost his job.'},
+    {word:'Alleviate',meaning:'To make suffering less severe',type:'verb',example:'The medicine helped alleviate her headache.'},
+    {word:'Coherent',meaning:'Logical and consistent',type:'adjective',example:'His argument was coherent and well-supported.'},
+    {word:'Inevitable',meaning:'Certain to happen',type:'adjective',example:'Change is inevitable in any growing organization.'},
+    {word:'Subtle',meaning:'So delicate as to be difficult to detect',type:'adjective',example:'There was a subtle difference between the two paintings.'},
+    {word:'Robust',meaning:'Strong and healthy',type:'adjective',example:'The economy showed robust growth this quarter.'},
+    {word:'Advocate',meaning:'To publicly support',type:'verb',example:'She advocates for equal rights in the workplace.'},
+    {word:'Comprehensive',meaning:'Covering all aspects',type:'adjective',example:'The report provided a comprehensive analysis of the problem.'},
+    {word:'Diverse',meaning:'Showing great variety',type:'adjective',example:'The team is diverse, with members from five countries.'},
+    {word:'Sustainable',meaning:'Able to be maintained long-term',type:'adjective',example:'We need sustainable energy solutions for the future.'},
+    {word:'Innovative',meaning:'Introducing new ideas',type:'adjective',example:'The company is known for its innovative products.'},
+    {word:'Collaborate',meaning:'To work together',type:'verb',example:'The two teams decided to collaborate on the project.'},
+    {word:'Initiative',meaning:'The ability to act independently',type:'noun',example:'She showed initiative by solving the problem before being asked.'}
+  ],
+  advanced: [
+    {word:'Epistemology',meaning:'Theory of knowledge',type:'noun',example:'Epistemology deals with the nature of knowledge itself.'},
+    {word:'Quintessential',meaning:'Representing the most perfect example',type:'adjective',example:'He is the quintessential gentleman always polite and courteous.'},
+    {word:'Paradox',meaning:'A seemingly contradictory statement',type:'noun',example:'It is a paradox that standing is more tiring than walking.'},
+    {word:'Aesthetic',meaning:'Concerned with beauty',type:'adjective',example:'The building has great aesthetic appeal.'},
+    {word:'Pragmatism',meaning:'Practical approach to problems',type:'noun',example:'His pragmatism helped the company avoid unnecessary risks.'},
+    {word:'Rhetoric',meaning:'The art of effective speaking',type:'noun',example:'The politician was skilled in the art of rhetoric.'},
+    {word:'Dichotomy',meaning:'A division into two contrasting parts',type:'noun',example:'There is a dichotomy between work life and personal life.'},
+    {word:'Nuanced',meaning:'Characterized by subtle distinctions',type:'adjective',example:'The issue is more nuanced than it first appears.'},
+    {word:'Cognitive',meaning:'Relating to mental processes',type:'adjective',example:'Cognitive skills improve with regular practice.'},
+    {word:'Synthesis',meaning:'Combining parts into a whole',type:'noun',example:'The essay requires a synthesis of multiple sources.'},
+    {word:'Ambivalent',meaning:'Having mixed feelings',type:'adjective',example:'She felt ambivalent about accepting the promotion.'},
+    {word:'Prolific',meaning:'Producing much work',type:'adjective',example:'He was a prolific writer, publishing ten books.'},
+    {word:'Stringent',meaning:'Strict and precise',type:'adjective',example:'The school has stringent requirements for admission.'},
+    {word:'Tangible',meaning:'Perceptible by touch',type:'adjective',example:'The results of the project were tangible and measurable.'},
+    {word:'Viable',meaning:'Capable of working successfully',type:'adjective',example:'We need to find a viable alternative to fossil fuels.'}
+  ]
+};
+
+const grammarTopics = [
+  {
+    title:'Present Simple Tense',icon:'📅',
+    content:'Used for habits, facts, and general truths.',
+    examples:[
+      {sentence:'She works in a hospital.',explanation:'Third person singular adds -s or -es',rule:'Subject + base verb (+s/es for he/she/it)'},
+      {sentence:'I do not like coffee.',explanation:'Negative form uses do/does + not',rule:'Subject + do/does + not + base verb'},
+      {sentence:'Do they play tennis?',explanation:'Questions start with Do/Does',rule:'Do/Does + subject + base verb?'}
+    ]
+  },
+  {
+    title:'Past Simple Tense',icon:'⏮️',
+    content:'Used for completed actions in the past.',
+    examples:[
+      {sentence:'She visited Paris last year.',explanation:'Regular verbs add -ed',rule:'Subject + verb + ed (regular) or irregular form'},
+      {sentence:'I did not see the movie.',explanation:'Negative uses did + not + base verb',rule:'Subject + did + not + base verb'},
+      {sentence:'Did you finish your homework?',explanation:'Questions start with Did',rule:'Did + subject + base verb?'}
+    ]
+  },
+  {
+    title:'Present Continuous',icon:'▶️',
+    content:'Used for actions happening now or temporary situations.',
+    examples:[
+      {sentence:'I am studying English right now.',explanation:'Formed with am/is/are + verb-ing',rule:'Subject + am/is/are + verb-ing'},
+      {sentence:'She is not working today.',explanation:'Negative form',rule:'Subject + am/is/are + not + verb-ing'},
+      {sentence:'Are they coming to the party?',explanation:'Question form',rule:'Am/Is/Are + subject + verb-ing?'}
+    ]
+  },
+  {
+    title:'Present Perfect',icon:'✅',
+    content:'Used for actions with connection to present or unspecified past time.',
+    examples:[
+      {sentence:'I have lived here for five years.',explanation:'Action started in past and continues',rule:'Subject + have/has + past participle'},
+      {sentence:'She has never been to Japan.',explanation:'Experience at unspecified time',rule:'Subject + have/has + never + past participle'},
+      {sentence:'Have you finished the report?',explanation:'Question about completed action',rule:'Have/Has + subject + past participle?'}
+    ]
+  },
+  {
+    title:'Conditionals',icon:'🔀',
+    content:'Used to talk about hypothetical situations.',
+    examples:[
+      {sentence:'If it rains, I will stay home.',explanation:'First conditional - real possibility',rule:'If + present simple, will + base verb'},
+      {sentence:'If I won the lottery, I would travel.',explanation:'Second conditional - hypothetical',rule:'If + past simple, would + base verb'},
+      {sentence:'If I had studied, I would have passed.',explanation:'Third conditional - past regret',rule:'If + past perfect, would have + past participle'}
+    ]
+  },
+  {
+    title:'Passive Voice',icon:'🔄',
+    content:'Used when the action is more important than the doer.',
+    examples:[
+      {sentence:'The cake was baked by my mother.',explanation:'Past simple passive',rule:'Subject + was/were + past participle'},
+      {sentence:'The report is being written now.',explanation:'Present continuous passive',rule:'Subject + am/is/are + being + past participle'},
+      {sentence:'The book has been translated.',explanation:'Present perfect passive',rule:'Subject + have/has + been + past participle'}
+    ]
+  },
+  {
+    title:'Modal Verbs',icon:'🔧',
+    content:'Express ability, permission, obligation, and possibility.',
+    examples:[
+      {sentence:'You must wear a seatbelt.',explanation:'Strong obligation',rule:'Subject + must + base verb'},
+      {sentence:'You should exercise regularly.',explanation:'Advice or recommendation',rule:'Subject + should + base verb'},
+      {sentence:'I can speak three languages.',explanation:'Ability',rule:'Subject + can/could + base verb'},
+      {sentence:'It might rain tomorrow.',explanation:'Possibility',rule:'Subject + may/might + base verb'}
+    ]
+  }
+];
+
+const listeningData = {
+  beginner: [
+    {
+      text:'Hello! My name is Sarah. I am twenty-five years old. I live in London. I work as a teacher. I like reading books and walking in the park. Every morning, I drink coffee and eat toast for breakfast. On weekends, I visit my parents in the countryside.',
+      questions:[
+        {question:'What is Sarahs job?',answers:['Doctor','Teacher','Engineer','Nurse'],correct:1},
+        {question:'Where does Sarah live?',answers:['Paris','New York','London','Tokyo'],correct:2},
+        {question:'What does Sarah eat for breakfast?',answers:['Cereal','Toast','Eggs','Fruit'],correct:1},
+        {question:'What does Sarah do on weekends?',answers:['She works','She visits parents','She travels','She studies'],correct:1}
+      ]
+    }
+  ],
+  intermediate: [
+    {
+      text:'The global climate crisis is one of the most pressing issues of our time. Scientists have warned that without immediate action, we could see irreversible damage to our ecosystems. Many countries have pledged to reduce carbon emissions, but progress has been slow. Renewable energy sources like solar and wind are becoming more affordable, yet fossil fuels still dominate the market. Individual actions matter too reducing waste, using public transport, and conserving energy can all make a difference.',
+      questions:[
+        {question:'What is described as one of the most pressing issues?',answers:['Economic growth','Climate crisis','Technology','Education'],correct:1},
+        {question:'What have scientists warned about?',answers:['Economic collapse','Irreversible ecosystem damage','Population growth','Water shortage'],correct:1},
+        {question:'Which energy sources are becoming more affordable?',answers:['Nuclear and coal','Solar and wind','Gas and oil','Hydro and geothermal'],correct:1},
+        {question:'What can individuals do to help?',answers:['Buy more products','Use public transport','Increase energy use','Ignore the problem'],correct:1}
+      ]
+    }
+  ],
+  advanced: [
+    {
+      text:'The concept of neuroplasticity has revolutionized our understanding of the human brain. Contrary to earlier beliefs that the brain was fixed after childhood, research now shows that the brain remains malleable throughout life. This adaptability allows us to learn new skills, recover from injuries, and even rewire harmful thought patterns. Cognitive behavioral therapy leverages this principle, helping individuals challenge and change negative cognitive distortions. The implications for education, mental health, and aging are profound, suggesting that it is never too late to learn or heal.',
+      questions:[
+        {question:'What has revolutionized our understanding of the brain?',answers:['Artificial intelligence','Neuroplasticity','Genetics','Quantum physics'],correct:1},
+        {question:'What was the earlier belief about the brain?',answers:['It was fixed after childhood','It never changed','It grew infinitely','It was controlled by genes'],correct:0},
+        {question:'What therapy leverages neuroplasticity?',answers:['Physical therapy','Cognitive behavioral therapy','Speech therapy','Occupational therapy'],correct:1},
+        {question:'What does the passage suggest about learning?',answers:['It is only for children','It is never too late to learn','It requires special equipment','It is limited by genetics'],correct:1}
+      ]
+    }
+  ]
+};
+
+const readingPassages = {
+  beginner: [
+    {
+      title:'A Day at the Beach',
+      text:'Last summer, my family and I went to the beach. The sun was shining, and the water was warm. My brother built a big sandcastle while my sister collected shells. I swam in the ocean and played volleyball with some friends. We ate sandwiches and drank lemonade for lunch. In the afternoon, we walked along the shore and watched the sunset. It was a perfect day!',
+      difficulty:'beginner',
+      questions:[
+        {question:'What did the brother do at the beach?',answers:['Swam in the ocean','Built a sandcastle','Played volleyball','Collected shells'],correct:1},
+        {question:'What did they eat for lunch?',answers:['Pizza','Sandwiches','Fish','Ice cream'],correct:1},
+        {question:'What did they do in the afternoon?',answers:['Went home','Walked along the shore','Built another castle','Slept'],correct:1},
+        {question:'How was the weather?',answers:['Rainy','Cloudy','Sunny','Windy'],correct:2}
+      ]
+    },
+    {
+      title:'My Favorite Hobby',
+      text:'I love cooking! It is my favorite hobby. Every weekend, I try a new recipe. Last week, I made Italian pasta with homemade sauce. My family loved it! Cooking helps me relax after a busy week. I also enjoy watching cooking shows on TV to learn new techniques. My dream is to open a small restaurant someday.',
+      difficulty:'beginner',
+      questions:[
+        {question:'What is the writers favorite hobby?',answers:['Reading','Cooking','Swimming','Painting'],correct:1},
+        {question:'What did the writer make last week?',answers:['Pizza','Pasta','Salad','Soup'],correct:1},
+        {question:'Why does the writer like cooking?',answers:['It is easy','It helps them relax','It is cheap','It is fast'],correct:1},
+        {question:'What is the writers dream?',answers:['To be a chef on TV','To open a restaurant','To write a cookbook','To travel to Italy'],correct:1}
+      ]
+    }
+  ],
+  intermediate: [
+    {
+      title:'The Benefits of Remote Work',
+      text:'Remote work has transformed the modern workplace. Employees report higher satisfaction and better work-life balance when they can work from home. Companies benefit from reduced office costs and access to a global talent pool. However, challenges exist. Communication can be difficult without face-to-face interaction, and some workers struggle with isolation. The key to successful remote work is establishing clear boundaries between professional and personal life. Regular video meetings and virtual team-building activities can help maintain connection and collaboration.',
+      difficulty:'intermediate',
+      questions:[
+        {question:'What do employees report about remote work?',answers:['Lower pay','Higher satisfaction','More stress','Less productivity'],correct:1},
+        {question:'What benefit do companies get from remote work?',answers:['Higher office costs','Reduced office costs','More employees','Better products'],correct:1},
+        {question:'What challenge is mentioned?',answers:['Too much communication','Isolation','High costs','Short hours'],correct:1},
+        {question:'What helps maintain connection?',answers:['Working alone','Video meetings','Email only','No communication'],correct:1}
+      ]
+    }
+  ],
+  advanced: [
+    {
+      title:'The Ethics of Artificial Intelligence',
+      text:'As artificial intelligence systems become increasingly sophisticated, ethical questions demand urgent attention. Autonomous decision-making in healthcare, criminal justice, and finance raises concerns about accountability and bias. Algorithmic bias can perpetuate existing inequalities if training data reflects historical prejudices. Transparency in AI systems remains challenging, particularly with deep learning models that function as black boxes. Experts advocate for robust regulatory frameworks, diverse development teams, and ongoing audits to ensure AI serves humanity equitably. The question is not whether we can build these systems, but whether we should and under what conditions.',
+      difficulty:'advanced',
+      questions:[
+        {question:'What areas are mentioned for AI decision-making?',answers:['Only healthcare','Healthcare, justice, and finance','Only education','Sports and entertainment'],correct:1},
+        {question:'What can algorithmic bias perpetuate?',answers:['Innovation','Inequalities','Efficiency','Creativity'],correct:1},
+        {question:'Why is transparency challenging?',answers:['AI is too simple','Deep learning models are black boxes','There are no experts','Computers are too slow'],correct:1},
+        {question:'What do experts advocate for?',answers:['No regulation','Robust regulatory frameworks','Banning all AI','Ignoring the problem'],correct:1}
+      ]
+    }
+  ]
+};
+
+const writingPrompts = [
+  {title:'About Yourself',prompt:'Write a short paragraph introducing yourself. Include your name, age, where you live, your job or studies, and your hobbies. (80-120 words)',hint:'Start with: My name is... I am... years old.',model:'My name is Emma and I am twenty-two years old. I live in Toronto, Canada, where I study computer science at university. In my free time, I enjoy playing basketball, reading science fiction novels, and exploring the city with my friends. I also love cooking and trying recipes from different cultures. My dream is to become a software engineer and create apps that help people learn new languages. I believe that technology can make education more accessible for everyone.'},
+  {title:'Your Favorite Place',prompt:'Describe your favorite place in the world. Why do you love it? What do you do there? Use descriptive adjectives. (100-150 words)',hint:'Use sensory details: what you see, hear, smell, feel.',model:'My favorite place is a small beach near my grandparents house in Portugal. The sand is golden and soft, and the water is a beautiful shade of turquoise. Every morning, I wake up to the sound of waves crashing against the rocks and seagulls calling overhead. The air smells of salt and fresh fish from the nearby village. I love walking along the shore at sunset, collecting shells, and feeling the warm breeze on my face. It is the only place where I feel completely peaceful and free from all worries.'},
+  {title:'A Memorable Experience',prompt:'Write about a memorable experience you have had. What happened? How did you feel? What did you learn? (120-180 words)',hint:'Use past tenses and time connectors: first, then, finally.',model:'Last summer, I had the most memorable experience of my life when I volunteered at an animal shelter. At first, I was nervous because I had never worked with animals before. However, the staff was incredibly supportive and taught me everything I needed to know. I spent my days feeding dogs, cleaning their spaces, and taking them for walks. One particular dog, a shy golden retriever named Max, gradually learned to trust me. By the end of the month, he would run to me whenever I arrived. This experience taught me the value of patience and compassion. It also inspired me to pursue a career in veterinary medicine.'},
+  {title:'Future Plans',prompt:'Write about your plans for the future. What are your goals? How will you achieve them? What do you hope to accomplish in 5 years? (100-150 words)',hint:'Use future tenses: will, going to, plan to.',model:'In five years, I plan to have completed my masters degree in environmental science and be working for an international organization focused on climate change. I am going to specialize in renewable energy solutions, particularly solar power technology. To achieve this goal, I will need to maintain excellent grades, complete internships in the field, and build a strong professional network. I also hope to publish at least one research paper and present my findings at a major conference. Ultimately, my dream is to contribute to making clean energy affordable and accessible to communities around the world.'}
+];
+
+const quizQuestions = {
+  easy: [
+    {question:'Which is the correct plural of "child"?',options:['childs','children','childes','childrens'],correct:1},
+    {question:'Choose the correct form: She ___ to the gym every day.',options:['go','goes','going','gone'],correct:1},
+    {question:'What is the opposite of "generous"?',options:['Kind','Selfish','Friendly','Helpful'],correct:1},
+    {question:'Complete: I ___ English for two years.',options:['study','am studying','have studied','studied'],correct:2},
+    {question:'Which word is a synonym for "happy"?',options:['Sad','Angry','Joyful','Tired'],correct:2},
+    {question:'Choose the correct article: ___ apple a day keeps the doctor away.',options:['A','An','The','No article'],correct:1},
+    {question:'What is the past tense of "eat"?',options:['eated','ate','eaten','eating'],correct:1},
+    {question:'Which sentence is grammatically correct?',options:['He dont like pizza.','He doesnt likes pizza.','He doesnt like pizza.','He not like pizza.'],correct:2}
+  ],
+  medium: [
+    {question:'Choose the correct conditional: If I ___ you, I would accept the offer.',options:['am','was','were','be'],correct:2},
+    {question:'Which sentence uses the passive voice correctly?',options:['The cake was baked by Sarah.','The cake baked by Sarah.','Sarah was baked the cake.','The cake is baking by Sarah.'],correct:0},
+    {question:'What is the meaning of "to procrastinate"?',options:['To work quickly','To delay unnecessarily','To finish early','To plan carefully'],correct:1},
+    {question:'Complete with the correct phrasal verb: Please ___ the lights before leaving.',options:['turn on','turn off','turn up','turn down'],correct:1},
+    {question:'Which word is an antonym for "obsolete"?',options:['Outdated','Current','Ancient','Old'],correct:1},
+    {question:'Choose the correct form: By next year, I ___ my degree.',options:['will finish','will have finished','finish','am finishing'],correct:1},
+    {question:'What does "to pull someones leg" mean?',options:['To hurt them','To joke with them','To help them','To ignore them'],correct:1},
+    {question:'Which sentence contains a dangling modifier?',options:['Running fast, the dog chased the cat.','Running fast, I saw the dog chase the cat.','The dog, running fast, chased the cat.','I saw the dog running fast.'],correct:0}
+  ],
+  hard: [
+    {question:'Which literary device is used in "The wind whispered through the trees"?',options:['Simile','Metaphor','Personification','Hyperbole'],correct:2},
+    {question:'Choose the grammatically correct sentence:',options:['Neither the students nor the teacher were present.','Neither the students nor the teacher was present.','Neither the students or the teacher was present.','Neither the students nor the teacher are present.'],correct:1},
+    {question:'What is the subjunctive mood used for?',options:['Facts and reality','Hypothetical or wished-for situations','Past events','Future predictions'],correct:1},
+    {question:'Identify the error: "The data is clear and proves my point."',options:['Data should be plural','Proves should be prove','Clear should be clearer','No error'],correct:0},
+    {question:'Which word is a homophone for "bare"?',options:['Bear','Beer','Bar','Berry'],correct:0},
+    {question:'What does "sesquipedalian" mean?',options:['Using long words','Being very short','Speaking quickly','Writing poetry'],correct:0},
+    {question:'Choose the correct sentence:',options:['Between you and I, this is wrong.','Between you and me, this is wrong.','Between you and myself, this is wrong.','Between we, this is wrong.'],correct:1},
+    {question:'What is an oxymoron?',options:['A comparison using like or as','A contradiction in terms','An exaggeration','A repetition of sounds'],correct:1}
+  ]
+};
+
+let achievements = [
+  {id:'first_word',name:'Word Learner',desc:'Learn your first word',icon:'📚',unlocked:false},
+  {id:'vocab_master',name:'Vocab Master',desc:'Learn 20 words',icon:'🧠',unlocked:false},
+  {id:'grammar_novice',name:'Grammar Novice',desc:'Complete 3 grammar topics',icon:'📝',unlocked:false},
+  {id:'grammar_expert',name:'Grammar Expert',desc:'Complete all grammar topics',icon:'🏅',unlocked:false},
+  {id:'listener',name:'Good Listener',desc:'Complete 5 listening exercises',icon:'🎧',unlocked:false},
+  {id:'reader',name:'Bookworm',desc:'Read 5 passages',icon:'📖',unlocked:false},
+  {id:'writer',name:'Young Author',desc:'Complete 3 writing exercises',icon:'✍️',unlocked:false},
+  {id:'quiz_warrior',name:'Quiz Warrior',desc:'Score 50 points in quizzes',icon:'⚔️',unlocked:false},
+  {id:'quiz_master',name:'Quiz Master',desc:'Score 100 points in quizzes',icon:'👑',unlocked:false},
+  {id:'streak_3',name:'On Fire',desc:'3-day learning streak',icon:'🔥',unlocked:false},
+  {id:'streak_7',name:'Unstoppable',desc:'7-day learning streak',icon:'⚡',unlocked:false},
+  {id:'xp_100',name:'Century Club',desc:'Earn 100 XP',icon:'💯',unlocked:false},
+  {id:'xp_500',name:'Rising Star',desc:'Earn 500 XP',icon:'⭐',unlocked:false},
+  {id:'xp_1000',name:'Legend',desc:'Earn 1000 XP',icon:'🌟',unlocked:false}
+];
+
+// ==================== STATE ====================
+let state = {
+  xp:0,level:1,streak:0,learnedWords:[],completedGrammar:[],completedListening:[],readPassages:[],completedWriting:[],
+  quizScore:0,quizTotal:0,vocabScore:0,vocabStreak:0,currentVocabDifficulty:'beginner',currentListeningLevel:'beginner',
+  currentReadingLevel:'beginner',currentQuizDifficulty:'easy',currentVocabIndex:0,currentListeningIndex:0,
+  currentReadingIndex:0,currentWritingIndex:0,currentQuizIndex:0,darkMode:false,userName:'John'
+};
+
+let vocabTimer = null;
+let quizTimer = null;
+
+// ==================== INITIALIZATION ====================
+function init() {
+  loadState();
+  renderVocabGrid();
+  renderGrammar();
+  renderAchievements();
+  renderStats();
+  renderProgressBars();
+  renderLeaderboard();
+  loadVocabQuestion();
+  loadQuizQuestion();
+  loadReadingPassage();
+  loadWritingPrompt();
+  loadListeningExercise();
+  updateHeader();
+  startVocabTimer();
+  startQuizTimer();
+  if(state.darkMode) document.body.classList.add('dark-mode');
+}
+
+function loadState() {
+  const saved = localStorage.getItem('englishAppState');
+  if(saved) {
+    const parsed = JSON.parse(saved);
+    state = {...state,...parsed};
+    if(parsed.achievements) achievements = parsed.achievements;
+  }
+}
+
+function saveState() {
+  localStorage.setItem('englishAppState',JSON.stringify({...state,achievements}));
+}
+
+// ==================== NAVIGATION ====================
+function showSection(sectionId) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(sectionId).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ==================== HEADER ====================
+function updateHeader() {
+  document.getElementById('userLevel').textContent='Level '+state.level;
+  document.getElementById('xpFill').style.width=(state.xp%100)+'%';
+  document.getElementById('xpText').textContent=(state.xp%100)+' / 100 XP';
+  document.getElementById('streakDays').textContent=state.streak;
+  document.getElementById('totalXP').textContent=state.xp;
+  document.getElementById('completedLessons').textContent=state.learnedWords.length+state.completedGrammar.length+state.completedListening.length;
+  document.getElementById('currentStreak').textContent=state.streak;
+  document.getElementById('userInitial').textContent=state.userName.charAt(0);
+  if(state.streak>=3) document.getElementById('streakCounter').classList.add('active');
+}
+
+function addXP(amount) {
+  state.xp+=amount;
+  const newLevel=Math.floor(state.xp/100)+1;
+  if(newLevel>state.level) {
+    state.level=newLevel;
+    showToast('🎉 Level Up! You are now Level '+state.level+'!','success');
+    triggerConfetti();
+  }
+  checkAchievements();
+  updateHeader();
+  saveState();
+}
+
+// ==================== VOCABULARY ====================
+function setVocabDifficulty(diff) {
+  state.currentVocabDifficulty=diff;
+  document.querySelectorAll('#vocabulary .difficulty-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  state.currentVocabIndex=0;
+  loadVocabQuestion();
+  renderVocabGrid();
+}
+
+function loadVocabQuestion() {
+  const words=vocabData[state.currentVocabDifficulty];
+  const current=words[state.currentVocabIndex%words.length];
+  document.getElementById('flashcardWord').textContent=current.word;
+  document.getElementById('flashcardType').textContent=current.type;
+  document.getElementById('flashcardMeaning').textContent=current.meaning;
+  document.getElementById('flashcardExample').textContent='"'+current.example+'"';
+  document.getElementById('flashcard').classList.remove('flipped');
+  const options=[current.meaning];
+  while(options.length<4) {
+    const random=words[Math.floor(Math.random()*words.length)].meaning;
+    if(!options.includes(random)) options.push(random);
+  }
+  options.sort(()=>Math.random()-0.5);
+  document.getElementById('vocabOptions').innerHTML=options.map(opt=>`
+    <div class="game-option" onclick="checkVocabAnswer('${opt}','${current.meaning}')">${opt}</div>
+  `).join('');
+  resetVocabTimer();
+}
+
+function flipCard() {
+  document.getElementById('flashcard').classList.toggle('flipped');
+}
+
+function speakVocabWord() {
+  const words=vocabData[state.currentVocabDifficulty];
+  const current=words[state.currentVocabIndex%words.length];
+  const utterance=new SpeechSynthesisUtterance(current.word);
+  utterance.lang='en-US';
+  utterance.rate=0.8;
+  speechSynthesis.speak(utterance);
+}
+
+function checkVocabAnswer(selected,correct) {
+  const options=document.querySelectorAll('.game-option');
+  options.forEach(opt=>{
+    opt.style.pointerEvents='none';
+    if(opt.textContent===correct) opt.classList.add('correct');
+    else if(opt.textContent===selected&&selected!==correct) opt.classList.add('wrong');
+  });
+  if(selected===correct) {
+    state.vocabScore+=10;
+    state.vocabStreak++;
+    addXP(10+state.vocabStreak*2);
+    showToast('✅ Correct! +'+(10+state.vocabStreak*2)+' XP','success');
+    if(!state.learnedWords.includes(correct)) state.learnedWords.push(correct);
+    clearInterval(vocabTimer);
+    setTimeout(nextVocabQuestion,1500);
+  } else {
+    state.vocabStreak=0;
+    showToast('❌ Wrong! Try again.','error');
+  }
+  document.getElementById('vocabScore').textContent=state.vocabScore;
+  document.getElementById('vocabStreak').textContent=state.vocabStreak;
+  saveState();
+}
+
+function nextVocabQuestion() {
+  state.currentVocabIndex++;
+  loadVocabQuestion();
+}
+
+function startVocabTimer() { resetVocabTimer(); }
+
+function resetVocabTimer() {
+  clearInterval(vocabTimer);
+  let time=30;
+  const timerEl=document.getElementById('vocabTimer');
+  timerEl.textContent=time;
+  timerEl.classList.remove('warning');
+  vocabTimer=setInterval(()=>{
+    time--;
+    timerEl.textContent=time;
+    if(time<=10) timerEl.classList.add('warning');
+    if(time<=0) {
+      clearInterval(vocabTimer);
+      showToast("Time's up!",'warning');
+      nextVocabQuestion();
+    }
+  },1000);
+}
+
+function renderVocabGrid() {
+  const words=vocabData[state.currentVocabDifficulty];
+  document.getElementById('vocabGrid').innerHTML=words.map(w=>`
+    <div class="vocab-card ${state.learnedWords.includes(w.meaning)?'learned':''}">
+      <div class="word">${w.word}</div>
+      <div class="type">${w.type}</div>
+      <div class="meaning">${w.meaning}</div>
+      <div class="example">"${w.example}"</div>
+      <button class="audio-btn-small" onclick="speakWord('${w.word}')">🔊</button>
+    </div>
+  `).join('');
+  const progress=(state.learnedWords.length/45)*100;
+  document.getElementById('vocabProgress').style.width=progress+'%';
+  document.getElementById('vocabProgressText').textContent=state.learnedWords.length+' / 45 words learned';
+}
+
+function speakWord(word) {
+  const utterance=new SpeechSynthesisUtterance(word);
+  utterance.lang='en-US';
+  speechSynthesis.speak(utterance);
+}
+
+// ==================== GRAMMAR ====================
+function renderGrammar() {
+  const container=document.getElementById('grammarContent');
+  container.innerHTML=grammarTopics.map((topic,i)=>`
+    <div class="grammar-topic">
+      <h3><span>${topic.icon}</span> ${topic.title}</h3>
+      <div class="content">${topic.content}</div>
+      ${topic.examples.map(ex=>`
+        <div class="grammar-example">
+          <div class="sentence">${ex.sentence}</div>
+          <div class="explanation">${ex.explanation}</div>
+          <div class="rule">${ex.rule}</div>
+        </div>
+      `).join('')}
+      <div style="text-align:center;margin-top:25px">
+        <button class="btn btn-primary" onclick="markGrammarComplete(${i})">✅ Mark as Learned (+15 XP)</button>
+      </div>
+    </div>
+  `).join('');
+  const progress=(state.completedGrammar.length/grammarTopics.length)*100;
+  document.getElementById('grammarProgress').style.width=progress+'%';
+  document.getElementById('grammarProgressText').textContent=state.completedGrammar.length+' / '+grammarTopics.length+' topics mastered';
+}
+
+function markGrammarComplete(index) {
+  if(!state.completedGrammar.includes(index)) {
+    state.completedGrammar.push(index);
+    addXP(15);
+    showToast('📝 Grammar topic mastered! +15 XP','success');
+    renderGrammar();
+    saveState();
+  }
+}
+
+// ==================== LISTENING ====================
+function setListeningLevel(level) {
+  state.currentListeningLevel=level;
+  document.querySelectorAll('#listening .difficulty-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  state.currentListeningIndex=0;
+  loadListeningExercise();
+}
+
+function loadListeningExercise() {
+  const exercises=listeningData[state.currentListeningLevel];
+  const exercise=exercises[state.currentListeningIndex%exercises.length];
+  document.getElementById('listenTranscript').textContent='Click play to listen...';
+  document.getElementById('listenTranscript').classList.add('hidden');
+  document.getElementById('listeningQuestions').innerHTML=exercise.questions.map((q,i)=>`
+    <div class="reading-question">
+      <p>${i+1}. ${q.question}</p>
+      <div class="reading-answers">
+        ${q.answers.map((a,j)=>`<div class="reading-answer" onclick="checkListeningAnswer(${i},${j},${q.correct})">${a}</div>`).join('')}
+      </div>
+    </div>
+  `).join('');
+  const progress=(state.completedListening.length/15)*100;
+  document.getElementById('listeningProgress').style.width=progress+'%';
+  document.getElementById('listeningProgressText').textContent=state.completedListening.length+' / 15 exercises completed';
+}
+
+function playListening() {
+  const exercises=listeningData[state.currentListeningLevel];
+  const exercise=exercises[state.currentListeningIndex%exercises.length];
+  const utterance=new SpeechSynthesisUtterance(exercise.text);
+  utterance.lang='en-US';
+  utterance.rate=0.85;
+  speechSynthesis.speak(utterance);
+  const btn=document.getElementById('listenPlayBtn');
+  btn.classList.add('playing');
+  btn.textContent='⏸️';
+  setTimeout(()=>{btn.classList.remove('playing');btn.textContent='▶️';},exercise.text.length*80);
+}
+
+function showTranscript() {
+  const exercises=listeningData[state.currentListeningLevel];
+  const exercise=exercises[state.currentListeningIndex%exercises.length];
+  document.getElementById('listenTranscript').textContent=exercise.text;
+  document.getElementById('listenTranscript').classList.remove('hidden');
+}
+
+function checkListeningAnswer(questionIndex,selectedIndex,correctIndex) {
+  const answers=document.querySelectorAll('#listening .reading-answer');
+  const startIdx=questionIndex*4;
+  answers.forEach((a,i)=>{
+    if(i>=startIdx&&i<startIdx+4) {
+      a.style.pointerEvents='none';
+      if(i-startIdx===correctIndex) { a.style.borderColor='var(--success)'; a.style.background='rgba(16,185,129,0.1)'; }
+      else if(i-startIdx===selectedIndex&&selectedIndex!==correctIndex) { a.style.borderColor='var(--error)'; a.style.background='rgba(239,68,68,0.1)'; }
+    }
+  });
+  if(selectedIndex===correctIndex) { addXP(5); showToast('✅ Correct! +5 XP','success'); }
+  else showToast('❌ Wrong answer!','error');
+  if(!state.completedListening.includes(state.currentListeningIndex)) { state.completedListening.push(state.currentListeningIndex); saveState(); }
+}
+
+// ==================== READING ====================
+function setReadingLevel(level) {
+  state.currentReadingLevel=level;
+  document.querySelectorAll('#reading .difficulty-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  state.currentReadingIndex=0;
+  loadReadingPassage();
+}
+
+function loadReadingPassage() {
+  const passages=readingPassages[state.currentReadingLevel];
+  const passage=passages[state.currentReadingIndex%passages.length];
+  document.getElementById('readingPassage').innerHTML=`
+    <div class="difficulty-tag ${passage.difficulty}">${passage.difficulty}</div>
+    <div class="title">${passage.title}</div>
+    <div class="text">${passage.text}</div>
+    <div style="text-align:center;margin-top:20px"><button class="audio-btn" onclick="speakPassage()" title="Listen">🔊</button></div>
+  `;
+  document.getElementById('readingQuestions').innerHTML=passage.questions.map((q,i)=>`
+    <div class="reading-question">
+      <p>${i+1}. ${q.question}</p>
+      <div class="reading-answers">
+        ${q.answers.map((a,j)=>`<div class="reading-answer" onclick="checkReadingAnswer(${i},${j},${q.correct})">${a}</div>`).join('')}
+      </div>
+    </div>
+  `).join('');
+  const progress=(state.readPassages.length/12)*100;
+  document.getElementById('readingProgress').style.width=progress+'%';
+  document.getElementById('readingProgressText').textContent=state.readPassages.length+' / 12 passages read';
+}
+
+function speakPassage() {
+  const passages=readingPassages[state.currentReadingLevel];
+  const passage=passages[state.currentReadingIndex%passages.length];
+  const utterance=new SpeechSynthesisUtterance(passage.text);
+  utterance.lang='en-US';
+  utterance.rate=0.9;
+  speechSynthesis.speak(utterance);
+}
+
+function checkReadingAnswer(questionIndex,selectedIndex,correctIndex) {
+  const answers=document.querySelectorAll('#reading .reading-answer');
+  const startIdx=questionIndex*4;
+  answers.forEach((a,i)=>{
+    if(i>=startIdx&&i<startIdx+4) {
+      a.style.pointerEvents='none';
+      if(i-startIdx===correctIndex) { a.style.borderColor='var(--success)'; a.style.background='rgba(16,185,129,0.1)'; }
+      else if(i-startIdx===selectedIndex&&selectedIndex!==correctIndex) { a.style.borderColor='var(--error)'; a.style.background='rgba(239,68,68,0.1)'; }
+    }
+  });
+  if(selectedIndex===correctIndex) { addXP(5); showToast('✅ Correct! +5 XP','success'); }
+  else showToast('❌ Wrong answer!','error');
+  if(!state.readPassages.includes(state.currentReadingIndex)) { state.readPassages.push(state.currentReadingIndex); saveState(); }
+}
+
+// ==================== WRITING ====================
+function loadWritingPrompt() {
+  const prompt=writingPrompts[state.currentWritingIndex%writingPrompts.length];
+  document.getElementById('writingPrompt').innerHTML=`<h3>${prompt.title}</h3><div class="prompt-text">${prompt.prompt}</div><div class="word-count">Target: 80-180 words</div>`;
+}
+
+function checkWriting() {
+  const text=document.getElementById('writingTextarea').value.trim();
+  const wordCount=text.split(/\s+/).filter(w=>w.length>0).length;
+  if(wordCount<20) { showToast('⚠️ Please write at least 20 words!','warning'); return; }
+  addXP(10+Math.floor(wordCount/50));
+  showToast('✅ Great effort! +'+(10+Math.floor(wordCount/50))+' XP. Keep writing!','success');
+  if(!state.completedWriting.includes(state.currentWritingIndex)) { state.completedWriting.push(state.currentWritingIndex); saveState(); }
+}
+
+function getWritingHint() {
+  const prompt=writingPrompts[state.currentWritingIndex%writingPrompts.length];
+  showToast('💡 Hint: '+prompt.hint,'warning');
+}
+
+function clearWriting() {
+  document.getElementById('writingTextarea').value='';
+  document.getElementById('writingFeedback').style.display='none';
+}
+
+function saveWriting() {
+  const text=document.getElementById('writingTextarea').value;
+  localStorage.setItem('savedWriting',text);
+  showToast('💾 Writing saved!','success');
+}
+
+function showWritingModel() {
+  const prompt=writingPrompts[state.currentWritingIndex%writingPrompts.length];
+  showModal('Model Answer','<div style="font-family:\'Playfair Display\',serif;font-size:18px;line-height:1.8;color:var(--text);margin-bottom:20px">'+prompt.model+'</div><p style="color:var(--text-light)">Compare with your writing. Notice the structure, vocabulary, and grammar used.</p>');
+}
+
+// ==================== QUIZ ====================
+function setQuizDifficulty(diff) {
+  state.currentQuizDifficulty=diff;
+  document.querySelectorAll('#quiz .difficulty-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  state.currentQuizIndex=0;state.quizScore=0;state.quizTotal=0;
+  loadQuizQuestion();
+}
+
+function loadQuizQuestion() {
+  const questions=quizQuestions[state.currentQuizDifficulty];
+  const q=questions[state.currentQuizIndex%questions.length];
+  document.getElementById('quizQuestion').innerHTML=`<div class="highlight">${q.question}</div>`;
+  document.getElementById('quizOptions').innerHTML=q.options.map((opt,i)=>`<div class="quiz-option" onclick="checkQuizAnswer(${i},${q.correct})">${opt}</div>`).join('');
+  document.getElementById('quizFeedback').classList.remove('show','correct','wrong');
+  document.getElementById('nextQuizBtn').style.display='none';
+  document.getElementById('quizQuestionNum').textContent=state.currentQuizIndex+1;
+  document.getElementById('quizScore').textContent=state.quizScore;
+  resetQuizTimer();
+}
+
+function checkQuizAnswer(selected,correct) {
+  const options=document.querySelectorAll('.quiz-option');
+  options.forEach((opt,i)=>{
+    opt.style.pointerEvents='none';
+    if(i===correct) opt.classList.add('correct-answer');
+    else if(i===selected) opt.classList.add('wrong-answer');
+  });
+  const feedback=document.getElementById('quizFeedback');
+  if(selected===correct) {
+    state.quizScore+=10;
+    feedback.textContent='✅ Correct! Well done!';
+    feedback.classList.add('correct','show');
+    addXP(10);
+    showToast('✅ Correct! +10 XP','success');
+  } else {
+    feedback.textContent='❌ Wrong! The correct answer is: '+options[correct].textContent;
+    feedback.classList.add('wrong','show');
+    showToast('❌ Wrong answer!','error');
+  }
+  state.quizTotal++;
+  document.getElementById('quizScore').textContent=state.quizScore;
+  document.getElementById('nextQuizBtn').style.display='inline-flex';
+  clearInterval(quizTimer);
+  saveState();
+}
+
+function nextQuizQuestion() {
+  state.currentQuizIndex++;
+  loadQuizQuestion();
+}
+
+function startQuizTimer() { resetQuizTimer(); }
+
+function resetQuizTimer() {
+  clearInterval(quizTimer);
+  let time=60;
+  const timerEl=document.getElementById('quizTimer');
+  timerEl.textContent=time;
+  timerEl.classList.remove('warning');
+  quizTimer=setInterval(()=>{
+    time--;
+    timerEl.textContent=time;
+    if(time<=15) timerEl.classList.add('warning');
+    if(time<=0) {
+      clearInterval(quizTimer);
+      showToast("Time's up!",'warning');
+      nextQuizQuestion();
+    }
+  },1000);
+}
+
+// ==================== PROGRESS ====================
+function renderStats() {
+  document.getElementById('statsGrid').innerHTML=`
+    <div class="stat-card"><div class="icon">⭐</div><div class="value">${state.level}</div><div class="label">Current Level</div></div>
+    <div class="stat-card"><div class="icon">💯</div><div class="value">${state.xp}</div><div class="label">Total XP</div></div>
+    <div class="stat-card"><div class="icon">🔥</div><div class="value">${state.streak}</div><div class="label">Day Streak</div></div>
+    <div class="stat-card"><div class="icon">📚</div><div class="value">${state.learnedWords.length}</div><div class="label">Words Learned</div></div>
+    <div class="stat-card"><div class="icon">📝</div><div class="value">${state.completedGrammar.length}</div><div class="label">Grammar Topics</div></div>
+    <div class="stat-card"><div class="icon">🎯</div><div class="value">${state.quizScore}</div><div class="label">Quiz Score</div></div>
+  `;
+}
+
+function renderProgressBars() {
+  const categories=[
+    {name:'Vocabulary',progress:(state.learnedWords.length/45)*100,color:'#2563eb'},
+    {name:'Grammar',progress:(state.completedGrammar.length/grammarTopics.length)*100,color:'#f59e0b'},
+    {name:'Listening',progress:(state.completedListening.length/15)*100,color:'#10b981'},
+    {name:'Reading',progress:(state.readPassages.length/12)*100,color:'#8b5cf6'},
+    {name:'Writing',progress:(state.completedWriting.length/10)*100,color:'#ef4444'},
+    {name:'Quiz',progress:(state.quizTotal/25)*100,color:'#14b8a6'}
+  ];
+  document.getElementById('progressBars').innerHTML=categories.map(cat=>`
+    <div class="chart-bar"><div class="chart-label">${cat.name}</div><div class="chart-track"><div class="chart-fill" style="width:${cat.progress}%;background:${cat.color}"></div></div><div class="chart-value">${Math.round(cat.progress)}%</div></div>
+  `).join('');
+}
+
+function renderLeaderboard() {
+  const leaderboardData=[
+    {name:'Emma',level:6,xp:650},{name:'James',level:5,xp:520},{name:'Sophia',level:4,xp:410},
+    {name:'Lucas',level:4,xp:380},{name:'Olivia',level:3,xp:290},{name:'Noah',level:3,xp:250},
+    {name:'Ava',level:2,xp:160},{name:'Mason',level:2,xp:130}
+  ];
+  leaderboardData.push({name:state.userName,level:state.level,xp:state.xp,isUser:true});
+  leaderboardData.sort((a,b)=>b.xp-a.xp);
+  const ranks=['gold','silver','bronze'];
+  document.getElementById('leaderboard').innerHTML=leaderboardData.map((user,i)=>`
+    <div class="leaderboard-item" style="${user.isUser?'background:rgba(245,158,11,0.08);border-radius:16px;':''}">
+      <div class="leaderboard-rank ${i<3?ranks[i]:'normal'}">${i+1}</div>
+      <div class="leaderboard-avatar">${user.name.charAt(0)}</div>
+      <div class="leaderboard-info"><div class="leaderboard-name">${user.name} ${user.isUser?'(You)':''}</div><div class="leaderboard-level">Level ${user.level}</div></div>
+      <div class="leaderboard-xp">${user.xp} XP</div>
+    </div>
+  `).join('');
+}
+
+// ==================== ACHIEVEMENTS ====================
+function renderAchievements() {
+  document.getElementById('achievementsGrid').innerHTML=achievements.map(ach=>`
+    <div class="achievement ${ach.unlocked?'unlocked':''}" id="ach-${ach.id}">
+      <div class="badge-icon">${ach.icon}</div><div class="badge-name">${ach.name}</div><div class="badge-desc">${ach.desc}</div>
+    </div>
+  `).join('');
+}
+
+function checkAchievements() {
+  let newUnlocks=[];
+  if(state.learnedWords.length>=1&&!achievements[0].unlocked){achievements[0].unlocked=true;newUnlocks.push(achievements[0]);}
+  if(state.learnedWords.length>=20&&!achievements[1].unlocked){achievements[1].unlocked=true;newUnlocks.push(achievements[1]);}
+  if(state.completedGrammar.length>=3&&!achievements[2].unlocked){achievements[2].unlocked=true;newUnlocks.push(achievements[2]);}
+  if(state.completedGrammar.length>=grammarTopics.length&&!achievements[3].unlocked){achievements[3].unlocked=true;newUnlocks.push(achievements[3]);}
+  if(state.completedListening.length>=5&&!achievements[4].unlocked){achievements[4].unlocked=true;newUnlocks.push(achievements[4]);}
+  if(state.readPassages.length>=5&&!achievements[5].unlocked){achievements[5].unlocked=true;newUnlocks.push(achievements[5]);}
+  if(state.completedWriting.length>=3&&!achievements[6].unlocked){achievements[6].unlocked=true;newUnlocks.push(achievements[6]);}
+  if(state.quizScore>=50&&!achievements[7].unlocked){achievements[7].unlocked=true;newUnlocks.push(achievements[7]);}
+  if(state.quizScore>=100&&!achievements[8].unlocked){achievements[8].unlocked=true;newUnlocks.push(achievements[8]);}
+  if(state.streak>=3&&!achievements[9].unlocked){achievements[9].unlocked=true;newUnlocks.push(achievements[9]);}
+  if(state.streak>=7&&!achievements[10].unlocked){achievements[10].unlocked=true;newUnlocks.push(achievements[10]);}
+  if(state.xp>=100&&!achievements[11].unlocked){achievements[11].unlocked=true;newUnlocks.push(achievements[11]);}
+  if(state.xp>=500&&!achievements[12].unlocked){achievements[12].unlocked=true;newUnlocks.push(achievements[12]);}
+  if(state.xp>=1000&&!achievements[13].unlocked){achievements[13].unlocked=true;newUnlocks.push(achievements[13]);}
+  if(newUnlocks.length>0) {
+    renderAchievements();
+    newUnlocks.forEach(ach=>{showToast('🏆 Achievement Unlocked: '+ach.name+'!','success');});
+    triggerConfetti();
+  }
+}
+
+// ==================== UI UTILITIES ====================
+function showToast(message,type) {
+  const container=document.getElementById('toastContainer');
+  const toast=document.createElement('div');
+  toast.className='toast '+type;
+  const icons={success:'✅',error:'❌',warning:'⚠️'};
+  toast.innerHTML='<span class="toast-icon">'+(icons[type]||'ℹ️')+'</span><span class="toast-message">'+message+'</span>';
+  container.appendChild(toast);
+  setTimeout(()=>{toast.style.animation='fadeIn 0.3s ease reverse';setTimeout(()=>toast.remove(),300);},3000);
+}
+
+function triggerConfetti() {
+  const container=document.getElementById('confettiContainer');
+  const colors=['#2563eb','#f59e0b','#10b981','#8b5cf6','#ef4444','#14b8a6'];
+  for(let i=0;i<50;i++) {
+    const confetti=document.createElement('div');
+    confetti.className='confetti';
+    confetti.style.left=Math.random()*100+'%';
+    confetti.style.background=colors[Math.floor(Math.random()*colors.length)];
+    confetti.style.width=Math.random()*12+6+'px';
+    confetti.style.height=Math.random()*12+6+'px';
+    confetti.style.animationDelay=Math.random()*2+'s';
+    confetti.style.animationDuration=Math.random()*2+2+'s';
+    container.appendChild(confetti);
+    setTimeout(()=>confetti.remove(),4000);
+  }
+}
+
+function showModal(title,content) {
+  document.getElementById('modalContent').innerHTML='<h2>'+title+'</h2>'+content;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+}
+
+function toggleDarkMode() {
+  state.darkMode=!state.darkMode;
+  document.body.classList.toggle('dark-mode',state.darkMode);
+  showToast(state.darkMode?'🌙 Dark mode enabled':'☀️ Light mode enabled','success');
+  saveState();
+}
+
+function showHelp() {
+  showModal('Help & Guide','<div style="line-height:1.8;color:var(--text-light)"><p><strong>🎯 Getting Started:</strong> Click any card from the home page to start learning.</p><p><strong>📚 Vocabulary:</strong> Flip cards to reveal meanings. Choose the correct definition to earn points. Use the Word Bank to review all words.</p><p><strong>📝 Grammar:</strong> Read topics with examples and mark them as learned.</p><p><strong>🎧 Listening:</strong> Click play to hear passages. Answer comprehension questions. Show transcript if needed.</p><p><strong>📖 Reading:</strong> Read passages and answer questions. Use the audio button to hear the text.</p><p><strong>✍️ Writing:</strong> Respond to prompts, check word count, and compare with model answers.</p><p><strong>🎯 Quiz:</strong> Test your knowledge with timed questions across 3 difficulty levels.</p><p><strong>📊 Progress:</strong> Track XP, level, streak, and achievements.</p><p><strong>💡 Tips:</strong> Use audio buttons for pronunciation. Maintain daily streaks for bonus XP!</p></div>');
+}
+
+function showProfile() {
+  showModal('Your Profile','<div style="text-align:center"><div style="width:80px;height:80px;border-radius:50%;background:var(--gradient-2);display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:800;color:#78350f;margin:0 auto 20px">'+state.userName.charAt(0)+'</div><h3 style="margin-bottom:10px">'+state.userName+'</h3><p style="color:var(--text-light);margin-bottom:20px">Level '+state.level+' &bull; '+state.xp+' XP</p><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:15px;text-align:left"><div style="background:var(--bg-elevated);padding:15px;border-radius:12px"><div style="font-size:24px;font-weight:900;color:var(--primary)">'+state.learnedWords.length+'</div><div style="font-size:12px;color:var(--text-muted)">Words</div></div><div style="background:var(--bg-elevated);padding:15px;border-radius:12px"><div style="font-size:24px;font-weight:900;color:var(--accent)">'+state.completedGrammar.length+'</div><div style="font-size:12px;color:var(--text-muted)">Grammar</div></div><div style="background:var(--bg-elevated);padding:15px;border-radius:12px"><div style="font-size:24px;font-weight:900;color:var(--success)">'+state.streak+'</div><div style="font-size:12px;color:var(--text-muted)">Streak</div></div><div style="background:var(--bg-elevated);padding:15px;border-radius:12px"><div style="font-size:24px;font-weight:900;color:#8b5cf6">'+state.quizScore+'</div><div style="font-size:12px;color:var(--text-muted)">Quiz</div></div></div></div>');
+}
+
+document.getElementById('modalOverlay').addEventListener('click',function(e){
+  if(e.target===this) closeModal();
+});
+
+init();
+</script>
+</body>
+</html>
